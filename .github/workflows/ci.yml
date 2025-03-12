@@ -1,0 +1,52 @@
+name: Run API Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Specify the Node.js version you are using
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Fetch Access Token
+      - name: Fetch Spotify Access Token
+        id: get_token
+        run: |
+          access_token=$(curl -X POST "https://accounts.spotify.com/api/token" \
+            -d grant_type=client_credentials \
+            -d client_id=${{ secrets.SPOTIFY_CLIENT_ID }} \
+            -d client_secret=${{ secrets.SPOTIFY_CLIENT_SECRET }} \
+            -H "Content-Type: application/x-www-form-urlencoded" | jq -r .access_token)
+          echo "SPOTIFY_ACCESS_TOKEN=$access_token" >> $GITHUB_ENV
+
+      # Run the tests
+      - name: Run PactumJS Tests
+        run: npm test
+        env:
+          SPOTIFY_ACCESS_TOKEN: ${{ env.SPOTIFY_ACCESS_TOKEN }}
+
+      # Upload test results (optional but useful)
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: pactum-test-results
+          path: ./test-results
