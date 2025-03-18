@@ -8,7 +8,7 @@ This repository demonstrates how to automate API testing using **PactumJS** and 
 
 Want a detailed step-by-step guide? Check out the full article here:  
 
-🔗 **[How to Automate API Tests with PactumJS & GitHub Actions](https://medium.com/dev-genius/how-to-create-automated-api-tests-with-pactumjs-and-github-actions-d9488677b590)**  
+🔗 **[How to Create Automated API Tests with PactumJS and GitHub Actions](https://medium.com/dev-genius/how-to-create-automated-api-tests-with-pactumjs-and-github-actions-d9488677b590)**  
 
 ---
 
